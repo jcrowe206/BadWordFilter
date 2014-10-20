@@ -1,6 +1,6 @@
-<?php namespace Jcrowe\BadWordFilter\Facades;
+<?php namespace JCrowe\BadWordFilter\Facades;
 
 class BadWordFilter extends Facade {
 
-    protected static function getFacadeAccessor() { return 'bad-word-filter'; }
+    protected static function getFacadeAccessor() { return 'BadWordFilter'; }
 }
