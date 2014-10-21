@@ -6,10 +6,10 @@ Use the list that ships with the application or define your own custom blacklist
 and not partial words. This will match:
 
 ```php
-$myString = "Don't be an #asshole!";
+$myString = "Don't be a #FOOBAR!";
 $clean = \JCrowe\BadWordFilter\BadWordFilter::clean($myString);
 var_dump($clean);
-// output: "Don't be an #a*****e!"
+// output: "Don't be a #F****R!"
 ```
 
 but this will not:
