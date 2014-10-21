@@ -14,9 +14,11 @@ class BadWordFilter {
     private $regexStart = '/\b([-!$%^&*()_+|~=`{}\[\]:";\'<>?,.\/])?';
     private $regexEnd = '([-!$%^&*()_+|~=`{}\[\]:\";\'<>?,.\/])?\b/i';
 
-    public function __construct($app = false, $options = array()) {
+    public function __construct($options = array()) {
         $this->defaults = include __DIR__ . '/../../config/config.php';
-        if (!empty($options['source']) && $options['source'] !== $this->defaults['source'] || !empty($options['config_file'])) {
+        if (
+            !empty($options['source']) && $options['source'] !== $this->defaults['source']
+            || !empty($options['source_file']) && $options['source_file'] !== $this->defaults['source_file']) {
             $this->isUsingCustomDefinedWordList = true;
         }
         $this->config = array_merge($this->defaults, $options);
@@ -34,7 +36,7 @@ class BadWordFilter {
         }
     }
 
-    public function clean($input, $replaceWith = '*') {
+    public function scrub($input, $replaceWith = '*') {
         if (is_array($input)) {
             $this->dirtyKeys = array();
             return $this->cleanArray($input, $replaceWith);
@@ -43,6 +45,11 @@ class BadWordFilter {
         } else {
             throw new \Exception('Can only clean arrays and strings at this time.');
         }
+    }
+
+    public static function clean($input, $replaceWith = '*', $options = array()) {
+        $instance = new self($options);
+        return $instance->clean($input);
     }
 
     public function getDirtyKeys() {
@@ -214,11 +221,11 @@ class BadWordFilter {
     }
 
     private function getBadWordsFromConfigFile() {
-        if (file_exists($this->config['config_file'])) {
-            return include $this->config['config_file'];
+        if (file_exists($this->config['source_file'])) {
+            return include $this->config['source_file'];
         }
 
-        throw new \Exception('Source was config but the config file was not set or contained an invalid path. Tried looking for it at: ' . $this->config['config_file']);
+        throw new \Exception('Source was config but the config file was not set or contained an invalid path. Tried looking for it at: ' . $this->config['source_file']);
     }
 
     private function getBadWordsFromArray() {
