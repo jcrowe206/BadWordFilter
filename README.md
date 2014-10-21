@@ -48,8 +48,14 @@ composer install
 
 3) start cleaning your inputs~
 
+```php
+$cleanString = \JCrowe\BadWordFilter\BadWordFilter::clean("my cheesy string");
+var_dump($cleanString);
+// output: "my c****y string"
+```
+
 <h5>INPORTANT NOTE<h5>
-<strong>BadWordFilter is not and will never prevent XSS or SQL Injection. Take the proper steps in your code to sanitize all user input before
+<strong>BadWordFilter does not and never will prevent XSS or SQL Injection. Take the proper steps in your code to sanitize all user input before
 storing to a database or displaying to the client.</strong>
 
 
