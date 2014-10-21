@@ -157,7 +157,7 @@ class BadWordFilter {
     private function getBadWords() {
         if (empty($this->badWords)) {
             switch ($this->config['source']) {
-                case "config":
+                case "file":
                     $this->badWords = $this->getBadWordsFromConfigFile();
                     break;
                 case "array":
