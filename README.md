@@ -81,6 +81,7 @@ The Source File must return an array of words to check for. If you wish to speci
 split your array into sub keys of 'permissive', 'lenient', 'strict', 'very_strict', 'strictest', 'misspellings'
 
 <strong>Array</strong>
+
 If you specify a source type of "array" you must also specify a "bad_words_array" key that contains a list of words to check for.
 
 <h6>Strictness</h6>
