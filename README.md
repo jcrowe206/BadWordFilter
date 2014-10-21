@@ -98,7 +98,7 @@ Where permissive will allow all but the worst of words through and strictest wil
 Mispellings will also check for common misspellings and/or leet-speak. A full list of words can be seen in the src/config/bad_words.php file in this repo.
 
 
-<strong>Also Check</strong>
+<h6>Also Check</h6>
 
 In addition to the default list specified in the config file or array you can also pass in an "also_check" key that contains an array of words
 to flag.
