@@ -49,7 +49,7 @@ class BadWordFilter {
 
     public static function clean($input, $replaceWith = '*', $options = array()) {
         $instance = new self($options);
-        return $instance->clean($input);
+        return $instance->scrub($input);
     }
 
     public function getDirtyKeys() {
