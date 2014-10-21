@@ -163,8 +163,6 @@ $filter = new \JCrowe\BadWordFilter\BadWordFilter();
 if ($filter->isDirty(array('this is a dirty string')) {
     /// do something
 }
-
-}
 ```
 
 
