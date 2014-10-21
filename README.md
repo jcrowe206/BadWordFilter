@@ -98,7 +98,7 @@ to flag.
 
 
 
-<h3>Overriding Defaults<h3>
+<h3>Overriding Defaults</h3>
 
 You can override the default settings in the constructor if using the class as an instance, or as an optional parameter in the static method call
 
