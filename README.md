@@ -21,15 +21,6 @@ var_dump($clean);
 // output: "I am an ASSociative professor"
 ```
 
-You can define your own list of bad words to check against by passing in options to clean or to the constructor if using as an instance object
-
-```php
-$options = array(
-    ''
-);
-$badWordFilter = new \Jcrowe\BadWordFilter\BadWordFilter($options);
-
-```
 
 
 <h3>QuickStart Guide</h3>
