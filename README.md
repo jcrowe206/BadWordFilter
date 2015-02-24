@@ -7,7 +7,7 @@ and not partial words. This will match:
 
 ```php
 $myString = "Don't be a #FOOBAR!";
-$clean = \JCrowe\BadWordFilter\BadWordFilter::clean($myString);
+$clean = BadWordFilter::clean($myString);
 var_dump($clean);
 // output: "Don't be a #F****R!"
 ```
@@ -16,7 +16,7 @@ but this will not:
 
 ```php
 $myString = "I am an ASSociative professor";
-$clean = \JCrowe\BadWordFilter\BadWordFilter::clean($myString);
+$clean = BadWordFilter::clean($myString);
 var_dump($clean);
 // output: "I am an ASSociative professor"
 ```
@@ -37,10 +37,28 @@ var_dump($clean);
 composer install
 ```
 
-3) start cleaning your inputs~
+3) Add BadWordFilter to your providers array and create an alias to the facade in app.php
+
 
 ```php
-$cleanString = \JCrowe\BadWordFilter\BadWordFilter::clean("my cheesy string");
+$providers = array(
+   ...
+   ...
+   'JCrowe\BadWordFilter\Providers\BadWordFilterServiceProvider',
+),
+
+$aliases = array(
+    ...
+    ...
+    'OpenWeather'	  => 'JCrowe\OpenWeather\Facades\OpenWeather',
+),
+
+
+
+4) start cleaning your inputs~
+
+```php
+$cleanString = BadWordFilter::clean("my cheesy string");
 var_dump($cleanString);
 // output: "my c****y string"
 ```
@@ -119,7 +137,7 @@ This can be changed to be replaced with a set string by passing the new string a
 
 ```php
 $myOptions = array('also_check' => array('cheesy'));
-$cleanString = \JCrowe\BadWordFilter\BadWordFilter::clean("my cheesy string", '#!%^", $myOptions);
+$cleanString = BadWordFilter::clean("my cheesy string", '#!%^", $myOptions);
 var_dump($cleanString);
 // output: "my #!%^ string"
 ```
@@ -194,7 +212,7 @@ Return:
 Usage:
 ```php
 $string = "this really bad string";
-$cleanString = \JCrowe\BadWordFilter\BadWordFilter::clean($string);
+$cleanString = BadWordFilter::clean($string);
 ```
 
 
