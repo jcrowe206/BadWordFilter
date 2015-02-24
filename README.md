@@ -50,7 +50,7 @@ $providers = array(
 $aliases = array(
     ...
     ...
-    'OpenWeather'	  => 'JCrowe\OpenWeather\Facades\OpenWeather',
+    'BadWordFilter'	  => 'JCrowe\BadWordFilter\Facades\BadWordFilter',
 ),
 ```
 
