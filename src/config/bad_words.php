@@ -1,5 +1,17 @@
 <?php
 
+
+/**
+ * ==================================================================
+ * BAD WORD LIST
+ * ==================================================================
+ *
+ * The worst of the words are in the "permissive" key. An application that
+ * is considered "permissive" only filters out the most severely offensive
+ * bad words and lets more mild terms through. This list is entirely subjective
+ * and was compiled to be a good starting point but is by no means extensive
+ *
+ */
 return array(
     'permissive' => array(
         'shit',
