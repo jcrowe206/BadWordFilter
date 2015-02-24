@@ -9,7 +9,8 @@
         }
     ],
     "require": {
-        "php": ">=4.0.0"
+        "php": ">=4.0.0",
+        "illuminate/support": "4.*"
     },
     "autoload": {
         "classmap": [

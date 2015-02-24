@@ -1,7 +1,6 @@
 <?php namespace JCrowe\BadWordFilter\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use JCrowe\BadWordFilter\BadWordFilter;
 
 class BadWordFilterServiceProvider extends ServiceProvider
 {
@@ -15,7 +14,9 @@ class BadWordFilterServiceProvider extends ServiceProvider
     protected $defer = true;
 
 
-
+    /**
+     * Boot the package
+     */
     public function boot()
     {
         $namespace = 'bad-word-filter';
@@ -35,7 +36,8 @@ class BadWordFilterServiceProvider extends ServiceProvider
             $config = $app->make('config');
             /** @var array $defaults */
             $defaults = $config->get('bad-word-filter');
-            return new BadWordFilter($defaults);
+
+            return new \JCrowe\BadWordFilter\BadWordFilter($defaults?:[]);
         });
     }
 
