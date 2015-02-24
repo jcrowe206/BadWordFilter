@@ -104,7 +104,7 @@ You can override the default settings in the constructor if using the class as a
 $myOptions = array('strictness' => 'permissive', 'also_check' => array('foobar'));
 $filter = new \JCrowe\BadWordFilter\BadWordFilter($myOptions);
 
-$cleanString = $filter->scrub('Why did you FooBar my application?');
+$cleanString = $filter->clean('Why did you FooBar my application?');
 var_dump($cleanString);
 // output: "Why did you F****r my application?"
 ```
@@ -115,7 +115,7 @@ var_dump($cleanString);
 By default bad words will be replaced with the first letter followed by the requisite number of asterisks and then the last letter. Ie:
 "Cheese" would become "C****e"
 
-This can be changed to be replaced with a set string by passing the new string as an argument to the static "clean" function or the "scrub" method
+This can be changed to be replaced with a set string by passing the new string as an argument to the "clean" method
 
 ```php
 $myOptions = array('also_check' => array('cheesy'));
@@ -129,7 +129,7 @@ or
 ```php
 $myOptions = array('also_check' => array('cheesy'));
 $filter = new \JCrowe\BadWordFilter\BadWordFilter($myOptions);
-$cleanString = $filter->scrub("my cheesy string", '#!$%");
+$cleanString = $filter->clean("my cheesy string", '#!$%");
 var_dump($cleanString);
 // output: "my #!$% string"
 ```
@@ -157,7 +157,7 @@ if ($filter->isDirty(array('this is a dirty string')) {
 ```
 
 
-<h6>scrub</h6>
+<h6>clean</h6>
 <strong>
     Clean bad words from a string or an array. By default bad words are replaced with asterisks with the exception of the first and last letter.
     Optionally you can specify a string to replace the words with
@@ -174,13 +174,13 @@ Usage:
 ```php
 $filter = new \JCrowe\BadWordFilter\BadWordFilter();
 $string = "this really bad string";
-$cleanString = $filter->scrub($string);
+$cleanString = $filter->clean($string);
 ```
 
 
-<h6>clean</h6>
+<h6>STATIC clean</h6>
 <strong>
-    Static wrapper around the "scrub" method.
+    Static wrapper around the "clean" method.
 </strong>
 
 Params:
@@ -218,7 +218,7 @@ if ($badWords = $filter->getDirtyWordsFromString("this really bad string")) {
 ```
 
 
-<h6>getDirtyKeys</h6>
+<h6>getDirtyKeysFromArray</h6>
 <strong>After checking an array using the isDirty method you can access the bad keys by using this method</strong>
 
 Params : none
@@ -241,8 +241,7 @@ $arrayToCheck = array(
 
 $filter = new \JCrowe\BadWordFilter\BadWordFilter();
 
-if ($filter->isDirty($arrayToCheck)) {
-    $badKeys = $filter->getDirtyKeys();
+if ($badKeys = $filter->getDirtyKeysFromArray($arrayToCheck)) {
 
     var_dump($badKeys);
     /* output:

@@ -138,6 +138,17 @@ class BadWordFilter {
 
 
     /**
+     * Get an array of key/value pairs of dirty keys in the $input array
+     *
+     * @param array $input
+     * @return array
+     */
+    public function getDirtyKeysFromArray(array $input = [])
+    {
+        return $this->findBadWordsInArray($input);
+    }
+
+    /**
      * Create the regular expression for the provided $word
      *
      * @param $word
@@ -154,7 +165,8 @@ class BadWordFilter {
      *
      * @return bool
      */
-    private function isUsingCustomDefinedWordList() {
+    private function isUsingCustomDefinedWordList()
+    {
         return $this->isUsingCustomDefinedWordList;
     }
 
@@ -166,7 +178,8 @@ class BadWordFilter {
      * @param bool $previousKey
      * @return bool
      */
-    private function isADirtyArray(array $input) {
+    private function isADirtyArray(array $input)
+    {
 
         return $this->findBadWordsInArray($input) ? true : false;
     }
@@ -312,7 +325,8 @@ class BadWordFilter {
      * @return array|void
      * @throws \Exception
      */
-    private function getBadWords() {
+    private function getBadWords()
+    {
         if (!$this->badWords) {
             switch ($this->config['source']) {
                 case "file":
@@ -375,7 +389,8 @@ class BadWordFilter {
      * @param array $keys
      * @return array
      */
-    private function getBadWordsByKey(array $keys) {
+    private function getBadWordsByKey(array $keys)
+    {
         $bw = [];
         foreach ($keys as $key) {
             if (!empty($this->badWords[$key])) {
@@ -392,7 +407,8 @@ class BadWordFilter {
      * @return array
      * @throws \Exception
      */
-    private function getBadWordsFromConfigFile() {
+    private function getBadWordsFromConfigFile()
+    {
         if (file_exists($this->config['source_file'])) {
             return include $this->config['source_file'];
         }
@@ -407,7 +423,8 @@ class BadWordFilter {
      * @return array
      * @throws \Exception
      */
-    private function getBadWordsFromArray() {
+    private function getBadWordsFromArray()
+    {
         if (!empty($this->config['bad_words_array']) && is_array($this->config['bad_words_array'])) {
             return $this->config['bad_words_array'];
         }
@@ -421,7 +438,8 @@ class BadWordFilter {
      *
      * @throws \Exception
      */
-    private function getBadWordsFromDB() {
+    private function getBadWordsFromDB()
+    {
         throw new \Exception('Bad words from db is not yet supported. If you would like to see this feature please consider submitting a pull request.');
     }
 
@@ -432,7 +450,8 @@ class BadWordFilter {
      * @param $array
      * @return mixed
      */
-    private function flattenArray($array) {
+    private function flattenArray($array)
+    {
         $objTmp = (object) ['aFlat' => []];
 
         array_walk_recursive($array, create_function('&$v, $k, &$t', '$t->aFlat[] = $v;'), $objTmp);
