@@ -52,7 +52,7 @@ $aliases = array(
     ...
     'OpenWeather'	  => 'JCrowe\OpenWeather\Facades\OpenWeather',
 ),
-
+```
 
 
 4) start cleaning your inputs~
