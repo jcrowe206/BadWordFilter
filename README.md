@@ -147,9 +147,19 @@ or
 ```php
 $myOptions = array('also_check' => array('cheesy'));
 $filter = new \JCrowe\BadWordFilter\BadWordFilter($myOptions);
-$cleanString = $filter->clean("my cheesy string", '#!$%");
+$cleanString = $filter->clean("my cheesy string", "#!$%");
 var_dump($cleanString);
 // output: "my #!$% string"
+```
+
+In case you want to keep bad word and surround it by anything (ex. html tag):
+
+```php
+$myOptions = array('also_check' => array('cheesy'));
+$filter = new \JCrowe\BadWordFilter\BadWordFilter($myOptions);
+$cleanString = $filter->clean("my cheesy string", '<span style="color: red;">$0</span>");
+var_dump($cleanString);
+// output: "my <span style="color: red;">cheesy</span> string"
 ```
 
 <h3>Full method list</h3>
