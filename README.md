@@ -1,6 +1,8 @@
 BadWordFilter
 =============
 
+[![Build Status](https://travis-ci.org/jcrowe206/BadWordFilter.svg?branch=master)](https://travis-ci.org/jcrowe206/BadWordFilter) [![Coverage Status](https://coveralls.io/repos/jcrowe206/BadWordFilter/badge.svg?branch=master&service=github)](https://coveralls.io/github/jcrowe206/BadWordFilter?branch=master)
+
 A bad word filter for php. Pass in a string or multidimensional array to check for the existence of a predefined list of bad words.
 Use the list that ships with the application or define your own custom blacklist. BadWordFilter only matches whole words (excluding symbols)
 and not partial words. This will match:
