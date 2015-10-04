@@ -2,7 +2,8 @@
 
 namespace JCrowe\BadWordFilter;
 
-class BadWordFilter {
+class BadWordFilter
+{
 
 
     /**
@@ -43,7 +44,7 @@ class BadWordFilter {
      *
      * @var string
      */
-    private $regexStart = '/\b([-!$%^&*()_+|~=`{}\[\]:";\'<>?,.\/])?';
+    private $regexStart = '/\b([-!$%^&*()_+|~=`{}\[\]:";\'?,.\/])?';
 
 
     /**
@@ -51,34 +52,36 @@ class BadWordFilter {
      *
      * @var string
      */
-    private $regexEnd = '([-!$%^&*()_+|~=`{}\[\]:\";\'<>?,.\/])?\b/i';
+    private $regexEnd = '([-!$%^&*()_+|~=`{}\[\]:\";\'?,.\/])?\b/i';
 
 
     /**
      * Create the object and set up the bad words list and
      *
      * @param array $options
+     *
      * @throws \Exception
      */
     public function __construct(array $options = [])
     {
         $this->defaults = include __DIR__ . '/../../config/config.php';
-        if (
-            !empty($options['source']) && $options['source'] !== $this->defaults['source']
-            || !empty($options['source_file']) && $options['source_file'] !== $this->defaults['source_file']) {
+
+        if ($this->hasAlternateSource($options) || $this->hasAlternateSourceFile($options)) {
+
             $this->isUsingCustomDefinedWordList = true;
         }
+
         $this->config = array_merge($this->defaults, $options);
 
         $this->getBadWords();
     }
 
 
-
     /**
      * Check if the provided $input contains any bad words
      *
      * @param string|array $input
+     *
      * @return bool
      */
     public function isDirty($input)
@@ -92,6 +95,7 @@ class BadWordFilter {
      *
      * @param string|array $input
      * @param string $replaceWith
+     *
      * @return array|string
      */
     public function scrub($input, $replaceWith = '*')
@@ -100,13 +104,13 @@ class BadWordFilter {
     }
 
 
-
     /**
      * Clean the $input (array or string) and replace bad words with $replaceWith
      *
      * @param $input
      * @param string $replaceWith
      * @param array $options
+     *
      * @return array|string
      */
     public function clean($input, $replaceWith = '*')
@@ -119,6 +123,7 @@ class BadWordFilter {
      * Get dirty words from the provided $string as an array of bad words
      *
      * @param $string
+     *
      * @return array
      */
     public function getDirtyWordsFromString($string)
@@ -127,8 +132,11 @@ class BadWordFilter {
         $wordsToTest = $this->flattenArray($this->badWords);
 
         foreach ($wordsToTest as $word) {
+
             $word = preg_quote($word);
+
             if (preg_match($this->buildRegex($word), $string, $matchedString)) {
+
                 $badWords[] = $matchedString[0];
             }
         }
@@ -141,6 +149,7 @@ class BadWordFilter {
      * Get an array of key/value pairs of dirty keys in the $input array
      *
      * @param array $input
+     *
      * @return array
      */
     public function getDirtyKeysFromArray(array $input = [])
@@ -152,11 +161,12 @@ class BadWordFilter {
      * Create the regular expression for the provided $word
      *
      * @param $word
+     *
      * @return string
      */
     private function buildRegex($word)
     {
-        return $this->regexStart . "(" . $word . ")" . $this->regexEnd;
+        return $this->regexStart . '(' . $word . ')' . $this->regexEnd;
     }
 
 
@@ -176,11 +186,11 @@ class BadWordFilter {
      *
      * @param array $input
      * @param bool $previousKey
+     *
      * @return bool
      */
     private function isADirtyArray(array $input)
     {
-
         return $this->findBadWordsInArray($input) ? true : false;
     }
 
@@ -190,6 +200,7 @@ class BadWordFilter {
      *
      * @param array $input
      * @param bool $previousKey
+     *
      * @return array
      */
     private function findBadWordsInArray(array $input = [], $previousKey = false)
@@ -206,22 +217,25 @@ class BadWordFilter {
             if (is_array($value)) {
 
                 // call recursively to handle multidimensional array,
-                $this->isADirtyArray($value, $key);
-
-            } else if (is_string($value)) {
-
-                if ($this->isADirtyString($value)) {
-                    // bad word found, add the current key to the dirtyKeys array
-                    $dirtyKeys[] = ['key' => (string) $key, 'value' => $value];
-
-                }
+                $dirtyKeys[] = $this->findBadWordsInArray($value, $key);
 
             } else {
-                continue;
+                if (is_string($value)) {
+
+                    if ($this->isADirtyString($value)) {
+
+                        // bad word found, add the current key to the dirtyKeys array
+                        $dirtyKeys[] = (string) $key;
+
+                    }
+
+                } else {
+                    continue;
+                }
             }
         }
 
-        return $dirtyKeys;
+        return $this->flattenArray($dirtyKeys);
     }
 
 
@@ -230,12 +244,15 @@ class BadWordFilter {
      *
      * @param $array
      * @param $replaceWith
+     *
      * @return mixed
      */
     private function cleanArray(array $array = [], $replaceWith)
     {
         $dirtyKeys = $this->findBadWordsInArray($array);
+
         foreach ($dirtyKeys as $key) {
+
             $this->cleanArrayKey($key, $array, $replaceWith);
         }
 
@@ -249,14 +266,18 @@ class BadWordFilter {
      * @param $key
      * @param $array
      * @param $replaceWith
+     *
      * @return mixed
      */
     private function cleanArrayKey($key, &$array, $replaceWith)
     {
-        $keys = explode('.', $key['key']);
+        $keys = explode('.', $key);
+
         foreach ($keys as $k) {
+
             $array = &$array[$k];
         }
+
         return $array = $this->cleanString($array, $replaceWith);
     }
 
@@ -266,6 +287,7 @@ class BadWordFilter {
      *
      * @param $string
      * @param $replaceWith
+     *
      * @return mixed
      */
     private function cleanString($string, $replaceWith)
@@ -273,18 +295,24 @@ class BadWordFilter {
         $words = $this->getDirtyWordsFromString($string);
 
         if ($words) {
+
             foreach ($words as $word) {
+
                 if (!strlen($word)) {
+
                     continue;
                 }
-                if ($replaceWith == '*') {
+
+                if ($replaceWith === '*') {
 
                     $fc = $word[0];
                     $lc = $word[strlen($word) - 1];
                     $len = strlen($word);
 
                     $newWord = $len > 3 ? $fc . str_repeat('*', $len - 2) . $lc : $fc . '**';
+
                 } else {
+
                     $newWord = $replaceWith;
                 }
 
@@ -300,6 +328,7 @@ class BadWordFilter {
      * Check if the $input parameter is a dirty string
      *
      * @param $input
+     *
      * @return bool
      */
     private function isADirtyString($input)
@@ -312,9 +341,11 @@ class BadWordFilter {
      * Check if the input $string contains bad words
      *
      * @param $string
+     *
      * @return bool
      */
-    private function strContainsBadWords($string) {
+    private function strContainsBadWords($string)
+    {
         return $this->getDirtyWordsFromString($string) ? true : false;
     }
 
@@ -328,50 +359,79 @@ class BadWordFilter {
     private function getBadWords()
     {
         if (!$this->badWords) {
+
             switch ($this->config['source']) {
-                case "file":
+
+                case 'file':
                     $this->badWords = $this->getBadWordsFromConfigFile();
                     break;
-                case "array":
+
+                case 'array':
                     $this->badWords = $this->getBadWordsFromArray();
                     break;
-                case "database":
+
+                case 'database':
                     $this->badWords = $this->getBadWordsFromDB();
                     break;
+
                 default:
                     throw new \Exception('Config source was not a valid type. Valid types are: file, database, cache');
                     break;
             }
 
             if (!$this->isUsingCustomDefinedWordList()) {
+
                 switch ($this->config['strictness']) {
-                    case "permissive":
+
+                    case 'permissive':
                         $this->badWords = $this->getBadWordsByKey(['permissive']);
                         break;
-                    case "lenient":
+
+                    case 'lenient':
                         $this->badWords = $this->getBadWordsByKey(['permissive', 'lenient']);
                         break;
-                    case "strict":
+
+                    case 'strict':
                         $this->badWords = $this->getBadWordsByKey(['permissive', 'lenient', 'strict']);
                         break;
-                    case "very_strict":
+
+                    case 'very_strict':
                         $this->badWords = $this->getBadWordsByKey(['permissive', 'lenient', 'strict', 'very_strict']);
                         break;
-                    case "strictest":
-                        $this->badWords = $this->getBadWordsByKey(['permissive', 'lenient', 'strict', 'very_strict', 'strictest']);
+
+                    case 'strictest':
+                        $this->badWords = $this->getBadWordsByKey([
+                            'permissive',
+                            'lenient',
+                            'strict',
+                            'very_strict',
+                            'strictest'
+                        ]);
                         break;
-                    case "misspellings":
-                    case "all":
-                        $this->badWords = $this->getBadWordsByKey(['permissive', 'lenient', 'strict', 'very_strict', 'strictest', 'misspellings']);
+
+                    case 'misspellings':
+                    case 'all':
+                        $this->badWords = $this->getBadWordsByKey([
+                            'permissive',
+                            'lenient',
+                            'strict',
+                            'very_strict',
+                            'strictest',
+                            'misspellings'
+                        ]);
                         break;
+
                     default:
                         $this->badWords = $this->getBadWordsByKey(['permissive', 'lenient', 'strict', 'very_strict']);
                         break;
+
                 }
             }
 
             if (!empty($this->config['also_check'])) {
+
                 if (!is_array($this->config['also_check'])) {
+
                     $this->config['also_check'] = [$this->config['also_check']];
                 }
 
@@ -387,6 +447,7 @@ class BadWordFilter {
      * Get subset of the bad words by an array of $keys
      *
      * @param array $keys
+     *
      * @return array
      */
     private function getBadWordsByKey(array $keys)
@@ -397,6 +458,7 @@ class BadWordFilter {
                 $bw[] = $this->badWords[$key];
             }
         }
+
         return $bw;
     }
 
@@ -448,16 +510,38 @@ class BadWordFilter {
      * Flatten the input $array
      *
      * @param $array
+     *
      * @return mixed
      */
     private function flattenArray($array)
     {
-        $objTmp = (object) ['aFlat' => []];
+        $objTmp = (object)['aFlat' => []];
 
         array_walk_recursive($array, create_function('&$v, $k, &$t', '$t->aFlat[] = $v;'), $objTmp);
 
         return $objTmp->aFlat;
     }
 
+
+    /**
+     * @param array $options
+     *
+     * @return bool
+     */
+    private function hasAlternateSource(array $options)
+    {
+        return !empty($options['source']) && $options['source'] !== $this->defaults['source'];
+    }
+
+
+    /**
+     * @param array $options
+     *
+     * @return bool
+     */
+    private function hasAlternateSourceFile(array $options)
+    {
+        return !empty($options['source_file']) && $options['source_file'] !== $this->defaults['source_file'];
+    }
 
 }

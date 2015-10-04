@@ -94,6 +94,7 @@ return array(
         'testicle',
         'butt-pirate',
         'nutsack',
+        'nuttsack',
 
     ),
     'misspellings' => array(
