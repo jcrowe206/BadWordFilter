@@ -30,7 +30,7 @@ var_dump($clean);
 1) add the following to your composer.json file:
 
 ```javascript
-"jcrowe/bad-word-filter": "2.0.*"
+"jcrowe/bad-word-filter": "2.2.*"
 ```
 
 2) Run composer install
