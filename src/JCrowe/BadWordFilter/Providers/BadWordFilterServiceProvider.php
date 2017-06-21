@@ -19,7 +19,7 @@ class BadWordFilterServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if (version_compare($this->app->version(), '5.0') < 0) {
+        if (method_exists($this, 'package')) {
             $namespace = 'bad-word-filter';
             $path = __DIR__ . '/../../..';
             $this->package('jcrowe/bad-word-filter', $namespace, $path);
