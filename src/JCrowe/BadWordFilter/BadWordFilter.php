@@ -517,7 +517,9 @@ class BadWordFilter
     {
         $objTmp = (object)['aFlat' => []];
 
-        array_walk_recursive($array, create_function('&$v, $k, &$t', '$t->aFlat[] = $v;'), $objTmp);
+        array_walk_recursive($array, function(&$v, $k, &$t) {
+            $t->aFlat[] = $v;
+        }, $objTmp);
 
         return $objTmp->aFlat;
     }
