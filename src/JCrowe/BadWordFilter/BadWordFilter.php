@@ -52,7 +52,7 @@ class BadWordFilter
      *
      * @var string
      */
-    private $regexEnd = '([-!$%^&*()_+|~=`{}\[\]:\";\'?,.\/])?\b/i';
+    private $regexEnd = '([-!$%^&*()_+|~=`{}\[\]:\";\'?,.\/])?\b/iu';
 
 
     /**
