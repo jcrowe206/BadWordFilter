@@ -522,6 +522,8 @@ class BadWordFilter
         };
 
         array_walk_recursive($array, $callBack, $objTmp);
+
+        return $objTmp->aFlat;
     }
 
 
