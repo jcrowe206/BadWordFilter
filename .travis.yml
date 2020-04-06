@@ -14,7 +14,8 @@ php:
   - 7.4
 
 before_script:
-  - composer install --prefer-source --no-interaction --dev
+  - travis_wait 20 composer self-update
+  - travis_wait 20 composer install --prefer-source --no-interaction --dev
 
 # omitting "script:" will default to phpunit
 # use the $DB env variable to determine the phpunit.xml to use
